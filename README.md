@@ -32,12 +32,6 @@ TBD
 
 
 ## Usage
-Download gói thư viện
-https://git3.fsoft.com.vn/GROUP/gdk/android/mutilmediautilities/gdk-camerax.git
-Khai báo trong build.gradle
-implementation project(path: ':camerax')
-
-Khai báo sử dụng fragment
 
 ```kotlin
 VideoViewController? _videoViewController;
