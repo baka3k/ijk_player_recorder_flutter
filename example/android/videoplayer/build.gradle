@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
 
 android {
-  compileSdkVersion 30
+  compileSdkVersion 26
 
   compileOptions {
     sourceCompatibility JavaVersion.VERSION_1_8
@@ -10,7 +10,7 @@ android {
 
   defaultConfig {
     minSdkVersion 21
-    targetSdkVersion 30
+    targetSdkVersion 26
   }
 
   buildTypes {
@@ -32,7 +32,6 @@ dependencies {
 
   // video player editor
   implementation group: 'com.googlecode.mp4parser', name: 'isoparser', version: '1.1.22'
-//  api project(':gpuv')
-  implementation 'com.github.MasayukiSuda:GPUVideo-android:v0.1.1'
+  api project(':gpuv')
   api project(':ijkplayer-java')
 }

@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 android {
     // http://tools.android.com/tech-docs/new-build-system/tips
     //noinspection GroovyAssignabilityCheck
-    compileSdkVersion 30
+    compileSdkVersion 26
     //noinspection GroovyAssignabilityCheck
 
     lintOptions {
@@ -10,7 +10,7 @@ android {
     }
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 30
+        targetSdkVersion 26
     }
     buildTypes {
         release {

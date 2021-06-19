@@ -18,7 +18,7 @@ class VideoViewPlatform internal constructor(
     private val rtspView = RtspViewer(context)
 
     init {
-//        Log.d("VideoViewPlatform", "init args:$args")
+        Log.d("VideoViewPlatform", "init args:$args")
         methodChannel.setMethodCallHandler(this)
     }
 

@@ -9,9 +9,12 @@
       <excludeFolder url="file://$MODULE_DIR$/example/.dart_tool" />
       <excludeFolder url="file://$MODULE_DIR$/example/.pub" />
       <excludeFolder url="file://$MODULE_DIR$/example/build" />
+      <excludeFolder url="file://$MODULE_DIR$/example/ios/.symlinks/plugins/ijk_player_recorder/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/example/ios/.symlinks/plugins/ijk_player_recorder/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/example/ios/.symlinks/plugins/ijk_player_recorder/build" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Flutter Plugins" level="project" />
     <orderEntry type="library" name="Dart SDK" level="project" />
+    <orderEntry type="library" name="Flutter Plugins" level="project" />
   </component>
 </module>

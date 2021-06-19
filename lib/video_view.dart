@@ -35,9 +35,14 @@ class VideoView extends StatelessWidget {
   }
 
   void _onPlatformViewCreated(int id) {
+    print("-----------------------------------------");
+    print("_onPlatformViewCreated idView :$id");
     if (onVideoViewCreatedCallback == null) {
+      print("onVideoViewCreatedCallback null - return");
       return;
     }
+    print("_onPlatformViewCreated VideoView Created");
     onVideoViewCreatedCallback!(VideoViewController(id));
   }
+
 }
