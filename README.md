@@ -72,7 +72,6 @@ Method Support
     _videoViewController?.setVideoPath(videoURL);
   }
 ```
-Detail tham khảo file `gdk.gst.camerax.CameraFragmentkt`
 
 ## Authors
 
