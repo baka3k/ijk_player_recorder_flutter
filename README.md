@@ -22,8 +22,9 @@ For only android app get from [IJKPlayerRecorder](https://github.com/baka3k/RTSP
 ## Features
 
 - [x] Play RTSP video with LOW LATENCY on Flutter
-- [x] Support IOS & Android Record video 
-- [ ] Add filter/ effect to video - not at this time
+- [x] Android Play & Record video
+- [  ] Support IOS: Todo
+- [  ] Add filter/ effect to video - not at this time
 
 ## Requirements
 
