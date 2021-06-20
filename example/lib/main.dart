@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:ijk_player_recorder/ijk_player_recorder.dart';
 import 'package:ijk_player_recorder/video_view.dart';
 import 'package:ijk_player_recorder/video_view_controller.dart';
-import 'package:path_provider/path_provider.dart';
+// import 'package:path_provider/path_provider.dart';
 
 void main() {
   runApp(MyApp());
@@ -142,11 +142,11 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> startRecord() async {
-    Directory appDocDir = await getApplicationDocumentsDirectory();
-    setState(() {
-      outVideo = appDocDir.path + "/a.mp4";
-    });
-    _videoViewController?.startRecord(outVideo);
+    // Directory appDocDir = await getApplicationDocumentsDirectory();
+    // setState(() {
+    //   outVideo = appDocDir.path + "/a.mp4";
+    // });
+    // _videoViewController?.startRecord(outVideo);
   }
 
   void stopRecord() {
