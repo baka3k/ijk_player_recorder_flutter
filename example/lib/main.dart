@@ -20,9 +20,11 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   String _platformVersion = 'Unknown';
   String defaultValue =
-      "rtsp://wowzaec2demo.streamlock.net/vod/mp4:BigBuckBunny_115k.mov";
+      // "rtsp://wowzaec2demo.streamlock.net/vod/mp4:BigBuckBunny_115k.mov";
+      "rtsp://wowzaec2demo.streamlock.net/vod/mp4";
   String videoURL =
-      "rtsp://wowzaec2demo.streamlock.net/vod/mp4:BigBuckBunny_115k.mov";
+      // "rtsp://wowzaec2demo.streamlock.net/vod/mp4:BigBuckBunny_115k.mov";
+      "rtsp://wowzaec2demo.streamlock.net/vod/mp4";
   String outVideo = "";
   VideoViewController? _videoViewController;
   final textEditingController = TextEditingController();
@@ -105,18 +107,18 @@ class _MyAppState extends State<MyApp> {
               ),
               Row(
                 children: [
-                  FlatButton(onPressed: setURL, child: Text("SetURL")),
-                  FlatButton(
+                  TextButton(onPressed: setURL, child: Text("SetURL")),
+                  TextButton(
                       onPressed: startPreview, child: Text("StartPreview")),
-                  FlatButton(
+                  TextButton(
                       onPressed: stopPreview, child: Text("StopPreview")),
                 ],
               ),
               Row(
                 children: [
-                  FlatButton(
+                  TextButton(
                       onPressed: startRecord, child: Text("StartRecord")),
-                  FlatButton(onPressed: stopRecord, child: Text("StopRecord")),
+                  TextButton(onPressed: stopRecord, child: Text("StopRecord")),
                 ],
               ),
               Expanded(child: VideoView(
