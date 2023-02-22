@@ -1,60 +1,48 @@
-import 'dart:async';
-import 'dart:io';
+import 'dart:core';
+import 'dart:core';
 
 import 'package:flutter/material.dart';
-import 'package:ijk_player_recorder/video_view.dart';
-import 'package:ijk_player_recorder/video_view_controller.dart';
-import 'package:path_provider/path_provider.dart';
-import 'dart:math';
+import 'package:streaming_recorder/video_libs.dart';
+
+const Map<String, String> outPutPhotoCapture = {
+  "android": "/storage/emulated/0/Download",
+  "ios": "/storage/emulated/0/Download",
+};
+const Map<String, String> outPutVideooRecoder = {
+  "android": "/storage/emulated/0/Download",
+  "ios": "/storage/emulated/0/Download",
+};
+const String videoURL = "rtsp://wowzaec2demo.streamlock.net/vod/mp4";
+
+String outVideo = "${outPutVideooRecoder["android"]}/abc.mp4";
+String outPhoto = "${outPutPhotoCapture["android"]}/abc.jpg";
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
+  const MyApp({super.key});
+
   @override
-  _MyAppState createState() => _MyAppState();
+  State<MyApp> createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
-  String _platformVersion = 'Unknown';
-  String defaultValue =
-      // "rtsp://wowzaec2demo.streamlock.net/vod/mp4:BigBuckBunny_115k.mov";
-      "rtsp://wowzaec2demo.streamlock.net/vod/mp4";
-  String videoURL =
-      // "rtsp://wowzaec2demo.streamlock.net/vod/mp4:BigBuckBunny_115k.mov";
-      "rtsp://wowzaec2demo.streamlock.net/vod/mp4";
-  String outVideo = "";
   VideoViewController? _videoViewController;
-  final textEditingController = TextEditingController();
+  String _recordButton = "StartRecord";
+  String _playButton = "Play";
 
   @override
   void initState() {
     super.initState();
-    textEditingController.text = videoURL;
-    textEditingController.addListener(_onTextChanged);
   }
 
   @override
   void dispose() {
-    cleanUp();
+    _videoViewController?.stopPlayback();
+    _videoViewController?.release();
     super.dispose();
-  }
-
-  void cleanUp() {
-    stopPreview();
-    textEditingController.dispose();
-  }
-
-  void _onTextChanged() {
-    print('Second text field: ${textEditingController.text}');
-    String value = textEditingController.text;
-    if (value.isEmpty) {
-      videoURL = defaultValue;
-    }
-    setState(() {
-      videoURL = value;
-    });
   }
 
   @override
@@ -66,43 +54,63 @@ class _MyAppState extends State<MyApp> {
         ),
         body: Center(
           child: Column(
-            mainAxisSize: MainAxisSize.max,
             children: [
-              Row(
-                children: [
-                  Expanded(
-                      child: TextField(
-                    controller: textEditingController,
-                  )),
-                ],
-              ),
-              Text(
-                "outputvideo:" + outVideo,
+              const Text(
+                "url:$videoURL",
                 overflow: TextOverflow.ellipsis,
               ),
               Row(
                 children: [
-                  TextButton(onPressed: setURL, child: Text("SetURL")),
-                  TextButton(
-                      onPressed: startPreview, child: Text("StartPreview")),
-                  TextButton(
-                      onPressed: stopPreview, child: Text("StopPreview")),
+                  IntrinsicWidth(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        buildTextButton(_playButton, () {
+                          _handlePlayButton();
+                        }),
+                        buildTextButton(_recordButton, () {
+                          _handleRecordButton();
+                        }),
+                        buildTextButton("Capture Photo Frame", () {
+                          capturePhoto();
+                        }),
+                      ],
+                    ),
+                  ),
+                  IntrinsicWidth(
+                    child: Column(
+                      children: [
+                        buildTextButton("Effect 2", () {
+                          _handleClickedButtonEffect(2);
+                        }),
+                        buildTextButton("Effect 3", () {
+                          _handleClickedButtonEffect(8);
+                        }),
+                        buildTextButton("Effect 4", () {
+                          _handleClickedButtonEffect(4);
+                        }),
+                      ],
+                    ),
+                  ),
+                  IntrinsicWidth(
+                    child: Column(
+                      children: [
+                        buildTextButton("Effect 5", () {
+                          _handleClickedButtonEffect(5);
+                        }),
+                        buildTextButton("Effect 6", () {
+                          _handleClickedButtonEffect(6);
+                        }),
+                        buildTextButton("Effect 7", () {
+                          _handleClickedButtonEffect(7);
+                        }),
+                      ],
+                    ),
+                  )
                 ],
               ),
-              Row(
-                children: [
-                  TextButton(
-                      onPressed: startRecord, child: Text("StartRecord")),
-                  TextButton(onPressed: stopRecord, child: Text("StopRecord")),
-                ],
-              ),
-              Expanded(child: VideoView(
-                onVideoViewCreatedCallback: (VideoViewController controller) {
-                  setState(() {
-                    _videoViewController = controller;
-                  });
-                },
-              ))
+              buildVideoView()
             ],
           ),
         ),
@@ -110,32 +118,104 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-  void startPreview() {
-    _videoViewController?.start();
+  void _handleClickedButtonEffect(int i) {
+    _videoViewController?.setFilter(i);
   }
 
-  void stopPreview() {
-    _videoViewController?.stopPlayback();
+  void _handleRecordButton() {
+    if (_allowClick()) {
+      if (_recordButton == "StartRecord") {
+        setState(() {
+          _recordButton = "Recording";
+        });
+        startRecord();
+      } else {
+        setState(() {
+          _recordButton = "StartRecord";
+        });
+        stopRecord();
+      }
+    }
   }
-  String generateRandomString(int len) {
-    var r = Random();
-    return String.fromCharCodes(List.generate(len, (index) => r.nextInt(33) + 89));
+
+  void _handlePlayButton() {
+    if (_allowClick()) {
+      if (_playButton == "Play") {
+        setState(() {
+          _playButton = "Pause";
+        });
+        playVideo();
+      } else {
+        setState(() {
+          _playButton = "Play";
+        });
+        pauseVideo();
+      }
+    }
   }
-  Future<void> startRecord() async {
-    Directory appDocDir = await getApplicationDocumentsDirectory();
-    setState(() {
-      var rng = generateRandomString(10);
-      outVideo = appDocDir.path + "/" + rng + ".mp4";
-      print(outVideo);
-    });
+
+  DateTime loginClickTime = DateTime.now();
+
+  bool _allowClick() {
+    var currentTime = DateTime.now();
+    if (loginClickTime == null) {
+      loginClickTime = currentTime;
+      return true;
+    }
+    if (currentTime.difference(loginClickTime).inSeconds < 1) {
+      return false;
+    }
+
+    loginClickTime = currentTime;
+    return true;
+  }
+
+  playVideo() async {
+    _videoViewController?.setVideoPath(videoURL);
+    // _videoViewController?.start();
+  }
+
+  startRecord() async {
     _videoViewController?.startRecord(outVideo);
   }
 
-  void stopRecord() {
+  stopRecord() {
     _videoViewController?.stopRecord();
   }
 
-  void setURL() {
-    _videoViewController?.setVideoPath(videoURL);
+  capturePhoto() async {
+    _videoViewController?.capturePhoto(outPhoto);
+  }
+
+  pauseVideo() async {
+    _videoViewController?.stopPreview();
+  }
+
+  Container buildTextButton(String text, VoidCallback? onPressed) {
+    return Container(
+      width: double.infinity,
+      child: TextButton(
+        style: ButtonStyle(
+            foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(18.0),
+                    side: const BorderSide(color: Colors.blue)))),
+        onPressed: onPressed,
+        child: Text(text),
+      ),
+    );
+  }
+
+  SizedBox buildVideoView() {
+    return SizedBox(
+      width: 400,
+      height: 200,
+      child: VideoView(
+        onVideoViewCreatedCallback: (VideoViewController controller) {
+          _videoViewController = controller;
+        },
+      ),
+    );
   }
 }

@@ -22,18 +22,27 @@ For only android app get from [IJKPlayerRecorder](https://github.com/baka3k/RTSP
 ## Features
 
 - [x] Play RTSP video with LOW LATENCY on Flutter
-- [x] Android Play & Record video
-- [  ] Support IOS: Todo
-- [  ] Add filter/ effect to video - not at this time
+- [x] Play & Record video on Android
+- [x] Capture video frame and save to file on Android
+- [x] Apply Effect to video on Android
+- [  ] Support IOS: Todo - doese not yet support at this time
 
 ## Requirements
 
-- Flutter sdk: ">=2.12.0 <3.0.0"
-
+- Flutter 
+  sdk: '>=2.19.2 <3.0.0'
+  
 
 ## Usage
 
 ```dart
+import 'package:streaming_recorder/video_libs.dart'; // import Plugin
+```
+
+Record & Play Streaming RTSP
+
+```dart
+
 VideoViewController? _videoViewController;
 .....
 Expanded(child: VideoView(
@@ -47,7 +56,7 @@ Expanded(child: VideoView(
 ```
 Method Support
 
-```kotlin
+```dart
  void startPreview() {
     _videoViewController?.start();
   }
@@ -57,6 +66,7 @@ Method Support
   }
 
   Future<void> startRecord() async {
+    // Please make sure that you have storage permission, in this sample
     Directory appDocDir = await getApplicationDocumentsDirectory();
     setState(() {
       outVideo = appDocDir.path + "/a.mp4";
@@ -65,12 +75,21 @@ Method Support
   }
 
   void stopRecord() {
+    // MUST call stopRecord after call startRecord - to make sure the video format is CORRECT - if not - you CAN NOT play video file
     _videoViewController?.stopRecord();
   }
 
   void setURL() {
     _videoViewController?.setVideoPath(videoURL);
   }
+  capturePhoto() async {
+    _videoViewController?.capturePhoto(outPhoto);
+  }
+```
+
+Apply Filter fo video
+```dart
+    _videoViewController?.setFilter(i);
 ```
 
 ## Sample

@@ -1,4 +1,4 @@
-group 'com.hi.ijk_player_recorder'
+group 'com.baka3k.video.recorder.streaming_recorder'
 version '1.0-SNAPSHOT'
 
 buildscript {
@@ -18,9 +18,6 @@ allprojects {
     repositories {
         google()
         mavenCentral()
-        maven {
-            url "https://jitpack.io"
-        }
     }
 }
 
@@ -42,12 +39,12 @@ android {
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
+
     defaultConfig {
         minSdkVersion 21
     }
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    api "com.github.baka3k:RTSPRecorder:1.0.1"
+    implementation project(path: ':videoplayer')
 }
